@@ -8,7 +8,10 @@ document.querySelector<HTMLDivElement>("#app")!.innerHTML = /* html */ `
 <div class="loader-screen fixed z-5 top-0 left-0 w-full h-full bg-white transition-opacity"
   style="transition-duration: 1.5s;">
   <div class="absolute hv-center">
-    <img src="./Genshin/Genshin.png" class="title block" style="width: 45vmin;" alt="" />
+    <div class="flex flex-col items-center space-y-6">
+      <img src="./Genshin/Genshin.png" class="title block" style="width: 45vmin;" alt="" />
+      <progress class="loader-progress progress-bar" value="0" max="100"></progress>
+    </div>
   </div>
 </div>
 <div class="menu fixed z-4 top-0 left-0 w-full h-full select-none hidden">

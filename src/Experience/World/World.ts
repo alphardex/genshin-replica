@@ -94,6 +94,12 @@ export default class World extends kokomi.Component {
       });
     });
   }
+  update(time: number): void {
+    const progressbar = document.querySelector(
+      ".loader-progress"
+    )! as HTMLProgressElement;
+    progressbar.value = this.base.am.loadProgress * 100;
+  }
   // 创建门
   createDoor() {
     document.querySelector(".menu")?.classList.add("pointer-events-none");
