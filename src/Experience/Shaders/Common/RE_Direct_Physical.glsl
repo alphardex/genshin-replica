@@ -1,20 +1,16 @@
 #include "./aces.glsl"
 
-void RE_Direct_Physical(const in IncidentLight directLight,const in GeometricContext geometry,const in PhysicalMaterial material,inout ReflectedLight reflectedLight){
-    float dotNL=saturate(dot(geometry.normal,directLight.direction));
+void RE_Direct_Physical(const in IncidentLight directLight,const in vec3 geometryPosition,const in vec3 geometryNormal,const in vec3 geometryViewDir,const in vec3 geometryClearcoatNormal,const in PhysicalMaterial material,inout ReflectedLight reflectedLight){
+    float dotNL=saturate(dot(geometryNormal,directLight.direction));
     vec3 irradiance=dotNL*directLight.color;
     #ifdef USE_CLEARCOAT
-    float dotNLcc=saturate(dot(geometry.clearcoatNormal,directLight.direction));
+    float dotNLcc=saturate(dot(geometryClearcoatNormal,directLight.direction));
     vec3 ccIrradiance=dotNLcc*directLight.color;
-    clearcoatSpecular+=ccIrradiance*BRDF_GGX(directLight.direction,geometry.viewDir,geometry.clearcoatNormal,material.clearcoatF0,material.clearcoatF90,material.clearcoatRoughness);
+    clearcoatSpecular+=ccIrradiance*BRDF_GGX_Clearcoat(directLight.direction,geometryViewDir,geometryClearcoatNormal,material);
     #endif
     #ifdef USE_SHEEN
-    sheenSpecular+=irradiance*BRDF_Sheen(directLight.direction,geometry.viewDir,geometry.normal,material.sheenColor,material.sheenRoughness);
+    sheenSpecular+=irradiance*BRDF_Sheen(directLight.direction,geometryViewDir,geometryNormal,material.sheenColor,material.sheenRoughness);
     #endif
-    #ifdef USE_IRIDESCENCE
-    reflectedLight.directSpecular+=irradiance*BRDF_GGX_Iridescence(directLight.direction,geometry.viewDir,geometry.normal,material.specularColor,material.specularF90,material.iridescence,material.iridescenceFresnel,material.roughness);
-    #else
-    reflectedLight.directSpecular+=irradiance*BRDF_GGX(directLight.direction,geometry.viewDir,geometry.normal,material.specularColor,material.specularF90,material.roughness);
-    #endif
+    reflectedLight.directSpecular+=irradiance*BRDF_GGX(directLight.direction,geometryViewDir,geometryNormal,material);
     reflectedLight.directDiffuse+=irradiance*BRDF_Lambert(material.diffuseColor);
 }

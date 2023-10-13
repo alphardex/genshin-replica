@@ -1,4 +1,4 @@
-// https://ycw.github.io/three-shaderlib-skim/dist/#/0.150.0/basic/fragment
+// https://ycw.github.io/three-shaderlib-skim/dist/#/latest/basic/fragment
 #ifdef USE_FOG
 #ifdef FOG_EXP2
 float fogFactor=1.-exp(-fogDensity*fogDensity*vFogDepth*vFogDepth);
