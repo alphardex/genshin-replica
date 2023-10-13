@@ -137,6 +137,7 @@ body {
   filter: drop-shadow(
     0 var(--loading-element-shadow-offset) 0 var(--loading-element-bar-color)
   );
+  transform: rotateZ(0);
 }
 
 .loading-element .loading-element-wrapper::before {
@@ -151,6 +152,7 @@ body {
     0 var(--loading-element-shadow-offset) 0
       var(--loading-element-progress-color)
   );
+  transform: rotateZ(0);
   background: url("/Genshin/Elements.png") no-repeat left 100%;
   background-size: var(--loading-element-width) var(--loading-element-height);
   background-position-x: 0;
