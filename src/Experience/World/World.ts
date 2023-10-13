@@ -2,6 +2,7 @@ import * as kokomi from "kokomi.js";
 import * as THREE from "three";
 import { Howl } from "howler";
 import gsap from "gsap";
+import { CSSRulePlugin } from "gsap/all";
 
 import type Experience from "../Experience";
 
@@ -147,8 +148,16 @@ export default class World extends kokomi.Component {
 
     // 卡半岩，诶嘿
     document.querySelector(".loading-element")?.classList.remove("hollow");
-    gsap.to(".loading-element .loading-element-wrapper", {
-      "--loading-element-progress": "94.4%",
+    // gsap.to(".loading-element .loading-element-wrapper", {
+    //   "--loading-element-progress": "94.4%",
+    //   duration: 5,
+    // });
+    gsap.registerPlugin(CSSRulePlugin);
+    const rule = CSSRulePlugin.getRule(
+      ".loading-element .loading-element-wrapper:before"
+    );
+    gsap.to(rule, {
+      width: "94.4%",
       duration: 5,
     });
 

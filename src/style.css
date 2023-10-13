@@ -146,7 +146,8 @@ body {
   z-index: 1;
   top: var(--loading-element-img-top);
   left: 0;
-  width: var(--loading-element-progress);
+  /* width: var(--loading-element-progress); */
+  width: 0%;
   height: 100%;
   filter: drop-shadow(
     0 var(--loading-element-shadow-offset) 0
@@ -156,4 +157,30 @@ body {
   background: url("/Genshin/Elements.png") no-repeat left 100%;
   background-size: var(--loading-element-width) var(--loading-element-height);
   background-position-x: 0;
+  /* animation: loading-element 3.5s infinite forwards; */
 }
+
+/* @keyframes loading-element {
+  0% {
+    width: 0;
+  }
+
+  16.6% {
+  }
+
+  33.2% {
+  }
+
+  49.8% {
+  }
+
+  66.4% {
+  }
+
+  83% {
+  }
+
+  100% {
+    width: 94.4%;
+  }
+} */
