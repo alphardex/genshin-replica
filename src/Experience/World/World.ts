@@ -1,6 +1,7 @@
 import * as kokomi from "kokomi.js";
 import * as THREE from "three";
 import { Howl } from "howler";
+import gsap from "gsap";
 
 import type Experience from "../Experience";
 
@@ -141,7 +142,18 @@ export default class World extends kokomi.Component {
     this.startGame();
   }
   // 进游戏后随便做做啥
-  startGame() {
+  async startGame() {
     console.log("原神，启动！");
+
+    // 卡半岩，诶嘿
+    document.querySelector(".loading-element")?.classList.remove("hollow");
+    gsap.to(".loading-element .loading-element-wrapper", {
+      "--loading-element-progress": "94.4%",
+      duration: 5,
+    });
+
+    await kokomi.sleep(10000);
+
+    alert("没错，你卡了");
   }
 }

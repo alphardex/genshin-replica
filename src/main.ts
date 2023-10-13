@@ -43,6 +43,13 @@ document.querySelector<HTMLDivElement>("#app")!.innerHTML = /* html */ `
     </div>
   </div>
 </div>
+<div class="loading-element fixed z-4 top-0 left-0 w-full h-full bg-white select-none overflow-hidden hollow">
+  <div class="absolute hv-center">
+    <div class="loading-element-wrapper">
+      <img src="./Genshin/Elements.png" class="loading-element-img" alt="" />
+    </div>
+  </div>
+</div>
 `;
 
 const app = document.querySelector("#app")! as HTMLElement;
