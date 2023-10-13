@@ -15,7 +15,9 @@ export default class Experience extends kokomi.Base {
   post: Postprocessing;
   am: kokomi.AssetManager;
   constructor(sel = "#sketch") {
-    super(sel);
+    super(sel, {
+      autoAdaptMobile: true,
+    });
 
     (window as any).experience = this;
 
@@ -50,26 +52,5 @@ export default class Experience extends kokomi.Base {
     this.world.on("bloom-in", () => {
       this.post.bloomTransitionIn();
     });
-
-    this.resize();
-    window.addEventListener("resize", () => {
-      this.resize();
-    });
-  }
-  // 移动端横屏适配（WebGL侧）
-  resize() {
-    const width = document.documentElement.clientWidth,
-      height = document.documentElement.clientHeight;
-    const camera = this.camera as THREE.PerspectiveCamera;
-
-    if (width > height) {
-      this.renderer.setSize(width, height);
-      camera.aspect = width / height;
-      camera.updateProjectionMatrix();
-    } else {
-      this.renderer.setSize(height, width);
-      camera.aspect = height / width;
-      camera.updateProjectionMatrix();
-    }
   }
 }

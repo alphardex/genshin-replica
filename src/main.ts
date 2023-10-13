@@ -1,6 +1,8 @@
 import "@alphardex/aqua.css/dist/aqua.min.css";
 import "./style.css";
 
+import { adaptMobileDOM } from "kokomi.js";
+
 import Experience from "./Experience/Experience";
 
 document.querySelector<HTMLDivElement>("#app")!.innerHTML = /* html */ `
@@ -54,28 +56,9 @@ document.querySelector<HTMLDivElement>("#app")!.innerHTML = /* html */ `
 
 const app = document.querySelector("#app")! as HTMLElement;
 
-// 移动端横屏适配（DOM侧）
-const handleResize = (el: HTMLElement) => {
-  const width = document.documentElement.clientWidth,
-    height = document.documentElement.clientHeight;
-  if (width > height) {
-    el.style.webkitTransform = el.style.transform = `rotate(0deg)`;
-    el.style.width = `${width}px`;
-    el.style.height = `${height}px`;
-    el.style.webkitTransformOrigin = el.style.transformOrigin = `center`;
-  } else {
-    el.style.webkitTransform = el.style.transform = `rotate(90deg)`;
-    el.style.width = `${height}px`;
-    el.style.height = `${width}px`;
-    el.style.webkitTransformOrigin = el.style.transformOrigin = `${
-      width / 2
-    }px center`;
-  }
-};
-
-handleResize(app);
+adaptMobileDOM(app);
 window.addEventListener("resize", () => {
-  handleResize(app);
+  adaptMobileDOM(app);
 });
 
 new Experience("#sketch");
