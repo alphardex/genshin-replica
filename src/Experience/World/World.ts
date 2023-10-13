@@ -94,7 +94,7 @@ export default class World extends kokomi.Component {
       });
     });
   }
-  update(time: number): void {
+  update(): void {
     const progressbar = document.querySelector(
       ".loader-progress"
     )! as HTMLProgressElement;
