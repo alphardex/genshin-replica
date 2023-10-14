@@ -18,7 +18,7 @@ export default class Postprocessing extends kokomi.Component {
     this.params = {
       bloomTransitionIntensity: 0,
       bloomTransitionWhiteAlpha: 0,
-      dofBokehScale: 1,
+      dofBokehScale: 0,
       dofFocusDistance: 0,
       dofFocalLength: 0.05,
     };
@@ -148,7 +148,6 @@ export default class Postprocessing extends kokomi.Component {
   blurBehind() {
     gsap.to(this.dof, {
       bokehScale: 3.6,
-      duration: 0.8,
       ease: "power2.out",
     });
   }
