@@ -126,6 +126,7 @@ export default class World extends kokomi.Component {
         enterSound.play();
         this.enter();
       });
+      this.emit("blur-behind");
     });
   }
   // 进入游戏

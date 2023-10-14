@@ -49,6 +49,10 @@ export default class Experience extends kokomi.Base {
 
     this.post = new Postprocessing(this);
 
+    this.world.on("blur-behind", () => {
+      this.post.blurBehind();
+    });
+
     this.world.on("bloom-in", () => {
       this.post.bloomTransitionIn();
     });

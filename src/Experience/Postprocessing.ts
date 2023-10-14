@@ -11,16 +11,21 @@ export default class Postprocessing extends kokomi.Component {
   declare base: Experience;
   params;
   bt: BloomTranstionEffect;
+  dof: POSTPROCESSING.DepthOfFieldEffect;
   constructor(base: Experience) {
     super(base);
 
     this.params = {
       bloomTransitionIntensity: 0,
       bloomTransitionWhiteAlpha: 0,
+      dofBokehScale: 1,
+      dofFocusDistance: 0,
+      dofFocalLength: 0.05,
     };
 
     const composer = new POSTPROCESSING.EffectComposer(this.base.renderer, {
       frameBufferType: THREE.HalfFloatType,
+      multisampling: 8,
     });
     // @ts-ignore
     this.base.composer = composer;
@@ -41,8 +46,6 @@ export default class Postprocessing extends kokomi.Component {
     );
     composer.addPass(customEffectPass);
 
-    const fxaa = new POSTPROCESSING.FXAAEffect();
-
     const bloom = new POSTPROCESSING.BloomEffect({
       blendFunction: POSTPROCESSING.BlendFunction.ADD,
       mipmapBlur: true,
@@ -50,14 +53,21 @@ export default class Postprocessing extends kokomi.Component {
       intensity: 0.6,
     });
 
+    const dof = new POSTPROCESSING.DepthOfFieldEffect(this.base.camera, {
+      bokehScale: this.params.dofBokehScale,
+      focusDistance: this.params.dofFocusDistance,
+      focalLength: this.params.dofFocalLength,
+    });
+    this.dof = dof;
+
     const tonemapping = new POSTPROCESSING.ToneMappingEffect({
       mode: POSTPROCESSING.ToneMappingMode.ACES_FILMIC,
     });
 
     const effectPass = new POSTPROCESSING.EffectPass(
       this.base.camera,
-      fxaa,
       bloom,
+      dof,
       tonemapping
     );
     composer.addPass(effectPass);
@@ -69,8 +79,8 @@ export default class Postprocessing extends kokomi.Component {
     const params = this.params;
 
     if (debug.active) {
-      const debugFolder = debug.ui!.addFolder("bloomTransition");
-      debugFolder
+      const debugFolderBt = debug.ui!.addFolder("bloomTransition");
+      debugFolderBt
         .add(params, "bloomTransitionIntensity")
         .min(0)
         .max(5)
@@ -79,7 +89,7 @@ export default class Postprocessing extends kokomi.Component {
           const intensity = this.bt.uniforms.get("uIntensity")!;
           intensity.value = val;
         });
-      debugFolder
+      debugFolderBt
         .add(params, "bloomTransitionWhiteAlpha")
         .min(0)
         .max(1)
@@ -87,6 +97,35 @@ export default class Postprocessing extends kokomi.Component {
         .onChange((val: number) => {
           const whiteAlpha = this.bt.uniforms.get("uWhiteAlpha")!;
           whiteAlpha.value = val;
+        });
+
+      const debugFolderDof = debug.ui!.addFolder("depthOfField");
+      debugFolderDof
+        .add(params, "dofBokehScale")
+        .min(0)
+        .max(5)
+        .step(0.001)
+        .name("bokehScale")
+        .onChange((val: number) => {
+          this.dof.bokehScale = val;
+        });
+      debugFolderDof
+        .add(params, "dofFocusDistance")
+        .min(0)
+        .max(1)
+        .step(0.001)
+        .name("focusDistance")
+        .onChange((val: number) => {
+          this.dof.cocMaterial.uniforms.focusDistance.value = val;
+        });
+      debugFolderDof
+        .add(params, "dofFocalLength")
+        .min(0)
+        .max(1)
+        .step(0.001)
+        .name("focalLength")
+        .onChange((val: number) => {
+          this.dof.cocMaterial.uniforms.focalLength.value = val;
         });
     }
   }
@@ -103,6 +142,14 @@ export default class Postprocessing extends kokomi.Component {
       value: 1,
       duration: 0.2,
       delay: 0.5,
+    });
+  }
+  // 后方变模糊
+  blurBehind() {
+    gsap.to(this.dof, {
+      bokehScale: 3.6,
+      duration: 0.8,
+      ease: "power2.out",
     });
   }
 }
